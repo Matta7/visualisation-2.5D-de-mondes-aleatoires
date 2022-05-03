@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Created-By: Pronost Sacha/ Willenbucher Gurvan/ Siepka Aurélien/ Vallée Mathieu
+Main-Class: ProjetAnnuelJar

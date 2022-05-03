@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="ProjetAnnuel" default="packaging" basedir=".">
+
+<property name="projet.sources.dir" value="src"/>
+<property name="projet.build.dir" value="${basedir}/build"/>
+<property name="projet.lib.dir" value="lib"/>
+<property name="projet.dist.dir" value="${basedir}/dist"/>
+
+<path id="projet.classpath">
+	<fileset dir="${projet.lib.dir}">
+		<include name="*.jar"/>
+	</fileset>
+	<pathelement location="${projet.build.dir}" />
+</path>
+
+<target name="compile" description="Compilation des classes">
+	<javac srcdir="${projet.sources.dir}" destdir="${projet.build.dir}" debug="on" optimize="off" deprecation="on" includeantruntime="false">
+		<classpath refid="projet.classpath"/>
+	</javac>
+</target>
+
+<target name="init">
+<echo message="Initialisation de ${ant.project.name}"/>
+<delete dir="${basedir}/gen"/>
+<mkdir dir="${basedir}/gen"/>
+</target>
+
+<target name="run" description="execution" depends="compile">
+	<java classname="lanceur.Lanceur" fork="true">
+		<classpath refid="projet.classpath"/>
+	</java>
+</target>
+
+<target name="javadoc">
+	<javadoc sourcepath="src" destdir="${projet.dist.dir}/doc" >
+	<fileset dir="src" defaultexcludes="yes">
+		<include name="**" />
+	</fileset>
+	</javadoc>
+</target>
+
+<target name="packaging" depends="prepare,compile,javadoc">
+	<jar jarfile="${projet.dist.dir}/ProjetAnnuel.jar" basedir="${projet.build.dir}">
+		<manifest>
+				<attribute name="Main-Class" value="lanceur.Lanceur" />
+		</manifest>
+	</jar>
+</target>
+
+<target name="prepare">
+
+  <mkdir dir="${projet.dist.dir}"/>
+  <mkdir dir="${projet.build.dir}"/>
+  <mkdir dir="${projet.lib.dir}"/>
+
+</target>
+
+</project>
